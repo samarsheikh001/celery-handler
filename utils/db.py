@@ -7,10 +7,11 @@ load_dotenv()
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
+model_table_name = 'models'
 
 
 def get_model_info(model_id):
-    response = supabase.table('models').select(
+    response = supabase.table(model_table_name).select(
         "*").eq("id", model_id).execute()
     if response.data:
         return response.data[0]
@@ -18,18 +19,30 @@ def get_model_info(model_id):
         return None
 
 
-def add_dreambooth_request(images_zip, status, job_id, subjectType, steps,
-                           subjectIdentifier, subjectKeyword, title, user_id):
+def update_model_data(model_id: int, data: dict):
+    response = supabase.table(model_table_name).update(
+        data).eq('id', model_id).execute()
+    if response.data:
+        return response.data[0]
+    else:
+        return None
+
+
+def add_dreambooth_request(images_zip, status, job_id, subject_type, steps,
+                           subject_identifier, subject_keyword, title, user_id, base_model_name):
+    if base_model_name is None:
+        base_model_name = 'runwayml/stable-diffusion-v1-5'
     data = {
         'images_zip': images_zip,
         'status': status,
         'job_id': job_id,
-        'subjectType': subjectType,
+        'subject_type': subject_type,
         'steps': steps,
-        'subjectIdentifier': subjectIdentifier,
-        'subjectKeyword': subjectKeyword,
+        'subject_identifier': subject_identifier,
+        'subject_keyword': subject_keyword,
         'title': title,
-        'user_id': user_id
+        'user_id': user_id,
+        'base_model_name': base_model_name
     },
 
     response = supabase.table('models').insert(data).execute()
@@ -37,14 +50,18 @@ def add_dreambooth_request(images_zip, status, job_id, subjectType, steps,
     return response.data
 
 
-# # Define the values to be inserted
+# supabase.table('models').update(
+#     {'status': "created"}).eq('id', 8).execute()
+
+# Define the values to be inserted
 # images_zip = "https://firebasestorage.googleapis.com/v0/b/copykitties-avatar.appspot.com/o/bhumika_aurora.zip?alt=media&token=d0fe3b22-6a59-43e5-ab73-901c60bf0bfe"
 # status = "created"
 # steps = 1200
-# subjectIdentifier = "6164814fd3264c63a7309a3cee9fb892"
-# subjectKeyword = "@bhumika"
-# subjectType = "person"
+# subject_identifier = "6164814fd3264c63a7309a3cee9fb892"
+# subject_keyword = "@bhumika"
+# subject_type = "person"
 # title = "Bhumika"
+# base_model_name = "SG161222/Realistic_Vision_V2.0"
 
-# add_dreambooth_request(images_zip=images_zip, status=status, job_id=None, subjectType=subjectType, steps=steps,
-#                        subjectIdentifier=None, subjectKeyword=subjectKeyword, title=title, user_id="a2c14bd6-f025-4ff0-b98b-18b13ffce6b5")
+# add_dreambooth_request(images_zip=images_zip, status=status, job_id=None, subject_type=subject_type, steps=steps,
+#                        subject_identifier=None, subject_keyword=subject_keyword, title=title, user_id="a2c14bd6-f025-4ff0-b98b-18b13ffce6b5", base_model_name=base_model_name)
