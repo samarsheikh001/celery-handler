@@ -81,4 +81,4 @@ def task_done_handler(sender=None, **kwargs):
         find_and_terminate_pod(os.getenv('POD_NAME'))
 
 
-train_dreambooth("sdaasd", 15)
+# train_dreambooth("sdaasd", 15)

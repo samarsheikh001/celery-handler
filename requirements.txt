@@ -9,7 +9,6 @@ natsort
 safetensors
 xformers
 boto3
-firebase-admin
 python-dotenv
 flask
 redis
