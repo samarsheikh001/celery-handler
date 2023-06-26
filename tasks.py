@@ -2,7 +2,7 @@ import logging
 import os
 from time import sleep
 from celery import shared_task
-from celery.signals import task_success, task_prerun
+from celery.signals import task_success, task_prerun, worker_process_init
 from model_training import cleanup, prepare_model, train_model
 
 from utils.db import get_model_info, update_model_data
@@ -42,5 +42,14 @@ def task_done_handler(sender=None, **kwargs):
         print("terminate pod")
         find_and_terminate_pod(os.getenv('POD_NAME'))
 
+
+@worker_process_init.connect
+def setup_worker_init(sender=None, conf=None, **kwargs):
+    print("Worker initialised")
+    tasks_in_queue = get_queue_length()
+    print(f"Tasks in queue: {tasks_in_queue}")
+    if tasks_in_queue == 0:
+        print("terminate pod")
+        find_and_terminate_pod(os.getenv('POD_NAME'))
 
 # train_dreambooth("sdaasd", 15)

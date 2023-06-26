@@ -70,17 +70,19 @@ app = create_app()
 def start_add() -> dict[str, object]:
     user_id = request.form.get("user_id", type=int)
     model_id = request.form.get("model_id", type=int)
-    pods = get_pods()
-    active_tasks = get_active_tasks(app)
-    extra_pods = len(pods) - active_tasks
-    queue_length = get_queue_length() + 1
-    print(queue_length - extra_pods)
-    print("Active Tasks:", active_tasks)
-    print("Extra Pods:", extra_pods)
-    print("Queue Length:", queue_length)
-    for i in range(0, queue_length - extra_pods):
-        min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
-        rent_pod("NVIDIA GeForce RTX 4090", min_bid_price+0.01)
+    # pods = get_pods()
+    # active_tasks = get_active_tasks(app)
+    # extra_pods = len(pods) - active_tasks
+    # queue_length = get_queue_length() + 1
+    # print(queue_length - extra_pods)
+    # print("Active Tasks:", active_tasks)
+    # print("Extra Pods:", extra_pods)
+    # print("Queue Length:", queue_length)
+    # for i in range(0, queue_length - extra_pods):
+    #     min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
+    #     rent_pod("NVIDIA GeForce RTX 4090", min_bid_price+0.01)
+    min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
+    rent_pod("NVIDIA GeForce RTX 4090", min_bid_price)
     result = train_dreambooth.delay(user_id, model_id)
     return {"result_id": result.id}
 

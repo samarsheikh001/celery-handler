@@ -21,4 +21,5 @@ ENV PYTHONUNBUFFERED 1
 # Make the shell script executable
 RUN chmod +x run.sh
 
-# Run the shell script when the Docker container starts
+# Run celery worker when the container launches
+CMD ["celery", "-A", "make_celery", "worker", "--loglevel", "INFO", "-c", "1"]
