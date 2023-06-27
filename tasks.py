@@ -53,4 +53,4 @@ def setup_worker_init(sender=None, conf=None, **kwargs):
         find_and_terminate_pod(os.getenv('POD_NAME'))
 
 
-train_dreambooth(15)
+# train_dreambooth(15)
