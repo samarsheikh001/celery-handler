@@ -68,7 +68,6 @@ app = create_app()
 
 @app.post("/run-dreambooth")
 def start_add() -> dict[str, object]:
-    user_id = request.form.get("user_id", type=int)
     model_id = request.form.get("model_id", type=int)
     # pods = get_pods()
     # active_tasks = get_active_tasks(app)
@@ -83,7 +82,7 @@ def start_add() -> dict[str, object]:
     #     rent_pod("NVIDIA GeForce RTX 4090", min_bid_price+0.01)
     min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
     rent_pod("NVIDIA GeForce RTX 4090", min_bid_price)
-    result = train_dreambooth.delay(user_id, model_id)
+    result = train_dreambooth.delay(model_id)
     return {"result_id": result.id}
 
 

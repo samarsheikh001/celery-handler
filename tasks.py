@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @shared_task(ignore_result=False, bind=True)
-def train_dreambooth(self, user_id: str, model_id: str) -> dict:
+def train_dreambooth(self, model_id: str) -> dict:
     model_data = get_model_info(model_id)
     steps = model_data["steps"]
     base_model_name = model_data["base_model_name"]
@@ -52,4 +52,5 @@ def setup_worker_init(sender=None, conf=None, **kwargs):
         print("terminate pod")
         find_and_terminate_pod(os.getenv('POD_NAME'))
 
-# train_dreambooth("sdaasd", 15)
+
+train_dreambooth(15)
