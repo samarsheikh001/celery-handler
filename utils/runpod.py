@@ -105,7 +105,7 @@ def rent_pod(gpu_id, minimum_bid_price):
       imageName: "getrektx/dreambooth-server:latest"
       dockerArgs: ""
       ports: ""
-      volumeMountPath: "/workspace"
+      volumeMountPath: "/app"
       env: [
         {{ key: "S3_ENDPOINT_URL", value: "{os.getenv("S3_ENDPOINT_UR")}" }},
         {{ key: "S3_ACCESS_KEY_ID", value: "{os.getenv("S3_ACCESS_KEY_ID")}" }},
