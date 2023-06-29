@@ -18,8 +18,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Set environment variable
 ENV PYTHONUNBUFFERED 1
 
-# Make the shell script executable
-RUN chmod +x run.sh
-
 # Run celery worker when the container launches
 CMD ["celery", "-A", "make_celery", "worker", "--loglevel", "INFO", "-c", "1"]
