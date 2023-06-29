@@ -93,7 +93,7 @@ def rent_pod(gpu_id, minimum_bid_price):
      input: {{
       bidPerGpu: $minimumBidPrice
       cloudType: COMMUNITY
-      gpuCount: 2
+      gpuCount: 1
       minDownload: 300
       minUpload: 100
       volumeInGb: 40
@@ -317,6 +317,6 @@ def query_pod(pod_id):
 # pods = get_pods()
 # print(pods)
 # filtered_data = [pod for pod in pods if pod['runtime'] is None]
-min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
-print(min_bid_price)
-rent_pod("NVIDIA GeForce RTX 4090", min_bid_price + 0.01)
+# min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
+# print(min_bid_price)
+# rent_pod("NVIDIA GeForce RTX 4090", min_bid_price + 0.01)
