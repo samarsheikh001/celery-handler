@@ -102,7 +102,7 @@ def rent_pod(gpu_id, minimum_bid_price):
       minMemoryInGb: 15
       gpuTypeId: $gpuId
       name: "{identifier}"
-      imageName: "getrektx/dreambooth-server:latest"
+      imageName: "getrektx/dreambooth-worker:latest"
       dockerArgs: ""
       ports: ""
       volumeMountPath: "/app"
@@ -113,6 +113,11 @@ def rent_pod(gpu_id, minimum_bid_price):
         {{ key: "HUGGINGFACE_TOKEN", value: "{os.getenv("HUGGINGFACE_TOKEN")}" }},
         {{ key: "POD_NAME", value: "{identifier}" }},
         {{ key: "RUNPOD_API_KEY", value: "{os.getenv("RUNPOD_API_KEY")}" }},
+        {{ key: "SUPABASE_URL", value: "{os.getenv('SUPABASE_URL')}" }},
+        {{ key: "SUPABASE_KEY", value: "{os.getenv('SUPABASE_KEY')}" }},
+        {{ key: "CELERY_BROKER_URL", value: "{os.getenv('CELERY_BROKER_URL')}" }},
+        {{ key: "CELERY_RESULT_BACKEND", value: "{os.getenv('CELERY_RESULT_BACKEND')}" }},
+        {{ key: "IS_SERVER", value: "False" }},
       ]
     }}
   ) {{
@@ -312,6 +317,6 @@ def query_pod(pod_id):
 # pods = get_pods()
 # print(pods)
 # filtered_data = [pod for pod in pods if pod['runtime'] is None]
-# min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
-# print(min_bid_price)
-# rent_pod("NVIDIA GeForce RTX 4090", min_bid_price + 0.01)
+min_bid_price = fetch_minimum_bid_price("NVIDIA GeForce RTX 4090")
+print(min_bid_price)
+rent_pod("NVIDIA GeForce RTX 4090", min_bid_price + 0.01)
